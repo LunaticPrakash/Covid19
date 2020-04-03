@@ -3,7 +3,7 @@ This app displays the COVID-19 statisticals details of individual states of Indi
 
 ## Purpose :- 
 
-1. To know the correct information of COVID-19 in states of India.
+1. To know the correct information about no. of recovered, died, confirmed patients of COVID-19 in states of India.
 2. Understand JSON parsing
 
 ## Screenshot :-
