@@ -1,12 +1,12 @@
 package com.lunatic.covid19;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-
-
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,12 +26,23 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<CoronaItem> coronaItemArrayList;
     private RequestQueue requestQueue;
+    private TextView dailyDeaths, dailyConfirm, dailyReco, dateHeaders, totalDeath, totalConfirm,
+            totalRecovered;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dailyConfirm = findViewById(R.id.dailyConfirm);
+        dailyDeaths = findViewById(R.id.dailyDeath);
+        dailyReco = findViewById(R.id.dailyRecovered);
+        dateHeaders = findViewById(R.id.dateHeader);
+
+        totalRecovered = findViewById(R.id.totalRecovered);
+        totalConfirm = findViewById(R.id.totalConfirm);
+        totalDeath = findViewById(R.id.totalDeath);
 
 
         recyclerView = findViewById(R.id.myRecyclerView);
@@ -48,26 +59,65 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "https://api.covid19india.org/data.json";
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //fetching array named articles
-                    JSONArray jsonArray = response.getJSONArray("statewise");
 
-                    //creating jsonarray object for each array hence use loop
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject articlesObject = jsonArray.getJSONObject(i);
-                        String active = articlesObject.getString("active");
-                        String death = articlesObject.getString("deaths");
-                        String recovered = articlesObject.getString("recovered");
-                        String state = articlesObject.getString("state");
-                        String confirmed = articlesObject.getString("confirmed");
+                    //first fetch and display header
+                    //Header contains Today's and Total statistics
 
-                        CoronaItem coronaItem = new CoronaItem(state, death, active, recovered, confirmed);
+                    //for Today's details
+                    //"statewise" holds data of Today's cases at index 0
+                    JSONArray todayAndTotalDataArray = response.getJSONArray("statewise");
+                    JSONObject todayAndTotalDataJsonObject = todayAndTotalDataArray.getJSONObject(0);
+
+                    String dailyConfirmed = todayAndTotalDataJsonObject.getString("deltaconfirmed");
+                    String dailyDeath = todayAndTotalDataJsonObject.getString("deltadeaths");
+                    String dailyRec = todayAndTotalDataJsonObject.getString("deltarecovered");
+                    String dateHeader = todayAndTotalDataJsonObject.getString("lastupdatedtime").substring(0, 5);
+                    dateHeader = getFormattedDate(dateHeader);
+
+                    dailyConfirm.setText(dailyConfirmed);
+                    dailyReco.setText(dailyRec);
+                    dailyDeaths.setText(dailyDeath);
+                    dateHeaders.setText(dateHeader);
+
+                    //for Total Details
+                    //"todayAndTotalDataArray" holds data of all states
+                    //At index 0 of todayAndTotalDataArray "Total Details" is stored
+                    String totalDeathsFetched = todayAndTotalDataJsonObject.getString("deaths");
+                    String totalRecoverFetched = todayAndTotalDataJsonObject.getString("recovered");
+                    String totalConfirmedFetched = todayAndTotalDataJsonObject.getString("confirmed");
+
+                    totalConfirm.setText(totalConfirmedFetched);
+                    totalDeath.setText(totalDeathsFetched);
+                    totalRecovered.setText(totalRecoverFetched);
+
+
+                    //Secondly, fetch and display data for all states
+                    //that data is also present in todayAndTotalDataArray from index 1
+                    for (int i = 1; i < todayAndTotalDataArray.length(); i++) {
+                        JSONObject stateWiseArrayJSONObject = todayAndTotalDataArray.getJSONObject(i);
+                        String active = stateWiseArrayJSONObject.getString("active");
+                        String death = stateWiseArrayJSONObject.getString("deaths");
+                        String recovered = stateWiseArrayJSONObject.getString("recovered");
+                        String state = stateWiseArrayJSONObject.getString("state");
+                        String confirmed = stateWiseArrayJSONObject.getString("confirmed");
+                        String lastUpdated = stateWiseArrayJSONObject.getString("lastupdatedtime");
+
+                        //details of today cases for each individual state
+                        String todayActive = stateWiseArrayJSONObject.getString("deltaconfirmed ");
+                        String todayDeath = stateWiseArrayJSONObject.getString("deltadeaths");
+                        String todayRecovered = stateWiseArrayJSONObject.getString("deltarecovered");
+
+
+                        //pass all the detail to CoronaItem class
+                        CoronaItem coronaItem = new CoronaItem(state, death, active, recovered, confirmed, lastUpdated, todayDeath, todayRecovered, todayActive);
                         coronaItemArrayList.add(coronaItem);
                     }
 
+                    //setting the RecyclerView to display all information
                     RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, coronaItemArrayList);
                     recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -87,6 +137,40 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue.add(request);
 
+    }
+
+
+    //formatting date from numeric to aplhabetic  like 03/04 to 03 April
+    private String getFormattedDate(String dateHeader) {
+        Log.d("Prakash", "getFormattedDate: " + dateHeader.subSequence(3, 5));
+        switch (dateHeader.substring(3, 5)) {
+            case "01":
+                return dateHeader.substring(0, 2) + " Jan";
+            case "02":
+                return dateHeader.substring(0, 2) + " Feb";
+            case "03":
+                return dateHeader.substring(0, 2) + " March";
+            case "04":
+                return dateHeader.substring(0, 2) + " April";
+            case "05":
+                return dateHeader.substring(0, 2) + " May";
+            case "06":
+                return dateHeader.substring(0, 2) + " June";
+            case "07":
+                return dateHeader.substring(0, 2) + " July";
+            case "08":
+                return dateHeader.substring(0, 2) + " Aug";
+            case "09":
+                return dateHeader.substring(0, 2) + " Sep";
+            case "10":
+                return dateHeader.substring(0, 2) + " Oct";
+            case "11":
+                return dateHeader.substring(0, 2) + " Nov";
+            case "12":
+                return dateHeader.substring(0, 2) + " Dec";
+            default:
+                return null;
+        }
     }
 
 
