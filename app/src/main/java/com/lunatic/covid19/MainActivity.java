@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     //that data is also present in todayAndTotalDataArray from index 1
                     for (int i = 1; i < todayAndTotalDataArray.length(); i++) {
                         JSONObject stateWiseArrayJSONObject = todayAndTotalDataArray.getJSONObject(i);
+                        Log.d("Prakash", "onResponse: "+stateWiseArrayJSONObject);
                         String active = stateWiseArrayJSONObject.getString("active");
                         String death = stateWiseArrayJSONObject.getString("deaths");
                         String recovered = stateWiseArrayJSONObject.getString("recovered");
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                         String lastUpdated = stateWiseArrayJSONObject.getString("lastupdatedtime");
 
                         //details of today cases for each individual state
-                        String todayActive = stateWiseArrayJSONObject.getString("deltaconfirmed ");
+                        String todayActive = stateWiseArrayJSONObject.getString("deltaconfirmed");
                         String todayDeath = stateWiseArrayJSONObject.getString("deltadeaths");
                         String todayRecovered = stateWiseArrayJSONObject.getString("deltarecovered");
 
