@@ -7,8 +7,8 @@ This app displays the COVID-19 statisticals details of individual states of Indi
 2. Understand JSON parsing
 
 ## Screenshot :-
-![UI](app/src/main/res/drawable/screenshot_20200403-141025.png)
-![UI](app/src/main/res/drawable/screenshot_20200403-142055.png)
+![Screenshot1](app/src/main/res/drawable/screenshot1.png)
+![Screenshot2](app/src/main/res/drawable/screenshot2.png)
 
 ### Dependencies :-
 ```
