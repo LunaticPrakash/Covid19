@@ -7,13 +7,11 @@
     tools:context=".MainActivity">
 
 
-
-
     <LinearLayout
-        android:background="@color/white"
         android:id="@+id/headerLinearLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -42,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/confirmed"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/confirmed"
+                android:textColor="#D32F2F"
                 android:textSize="14sp" />
 
 
@@ -52,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/confirmed"
+                android:textColor="#D32F2F"
                 android:textSize="13sp" />
 
             <TextView
@@ -61,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/confirmed"
-                android:textSize="18sp" />
+                android:textColor="#D32F2F"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -80,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/recovered"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/recovered"
+                android:textColor="#2E7D32"
                 android:textSize="14sp" />
 
 
@@ -90,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/recovered"
+                android:textColor="#2E7D32"
                 android:textSize="13sp" />
 
             <TextView
@@ -99,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/recovered"
-                android:textSize="18sp" />
+                android:textColor="#2E7D32"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -138,7 +136,7 @@
                 android:text="@string/_0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -149,6 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/headerLinearLay"
+        android:layout_marginTop="1dp"
         android:background="@android:color/darker_gray" />
 
 </RelativeLayout>

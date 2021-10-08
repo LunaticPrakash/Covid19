@@ -20,6 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,67 +59,85 @@ public class MainActivity extends AppCompatActivity {
 
     private void jsonParse() {
 
-        String url = "https://api.covid19india.org/data.json";
+        String url = "https://data.covid19india.org/v4/min/data.min.json";
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    Iterator<String> keys = response.keys();
+                    while(keys.hasNext()) {
+                        String key = keys.next();
+                        if (response.get(key) instanceof JSONObject) {
+                            JSONObject stateJsonObject = (JSONObject) response.get(key);
 
-                    //first fetch and display header
-                    //Header contains Today's and Total statistics
+                            String stateName = key;
+                            String lastUpdated = getFormattedDate(stateJsonObject.getJSONObject("meta").getString("last_updated"));
+                            String confirmed = stateJsonObject.getJSONObject("total").getString("confirmed");
+                            String recovered = stateJsonObject.getJSONObject("total").getString("recovered");
+                            String deceased = stateJsonObject.getJSONObject("total").getString("deceased");
+                            String tested = stateJsonObject.getJSONObject("total").getString("tested");
+                            String vaccinated1 = stateJsonObject.getJSONObject("total").getString("vaccinated1");
+                            String vaccinated2 = stateJsonObject.getJSONObject("total").getString("vaccinated2");
+                            String active = String.valueOf(Integer.parseInt(confirmed) - (Integer.parseInt(recovered) + Integer.parseInt(deceased)));
+                            String todayDeceased = stateJsonObject.getJSONObject("delta").getString("deceased");
+                            String todayRecovered = stateJsonObject.getJSONObject("delta").getString("recovered");
+                            String todayConfirmed = stateJsonObject.getJSONObject("delta").getString("confirmed");
+                            String todayTested = stateJsonObject.getJSONObject("delta").getString("tested");
 
-                    //for Today's details
-                    //"statewise" holds data of Today's cases at index 0
-                    JSONArray todayAndTotalDataArray = response.getJSONArray("statewise");
-                    JSONObject todayAndTotalDataJsonObject = todayAndTotalDataArray.getJSONObject(0);
-
-                    String dailyConfirmed = todayAndTotalDataJsonObject.getString("deltaconfirmed");
-                    String dailyDeath = todayAndTotalDataJsonObject.getString("deltadeaths");
-                    String dailyRec = todayAndTotalDataJsonObject.getString("deltarecovered");
-                    String dateHeader = todayAndTotalDataJsonObject.getString("lastupdatedtime").substring(0, 5);
-                    dateHeader = getFormattedDate(dateHeader);
-
-                    dailyConfirm.setText(dailyConfirmed);
-                    dailyReco.setText(dailyRec);
-                    dailyDeaths.setText(dailyDeath);
-                    dateHeaders.setText(dateHeader);
-
-                    //for Total Details
-                    //"todayAndTotalDataArray" holds data of all states
-                    //At index 0 of todayAndTotalDataArray "Total Details" is stored
-                    String totalDeathsFetched = todayAndTotalDataJsonObject.getString("deaths");
-                    String totalRecoverFetched = todayAndTotalDataJsonObject.getString("recovered");
-                    String totalConfirmedFetched = todayAndTotalDataJsonObject.getString("confirmed");
-
-                    totalConfirm.setText(totalConfirmedFetched);
-                    totalDeath.setText(totalDeathsFetched);
-                    totalRecovered.setText(totalRecoverFetched);
-
-
-                    //Secondly, fetch and display data for all states
-                    //that data is also present in todayAndTotalDataArray from index 1
-                    for (int i = 1; i < todayAndTotalDataArray.length(); i++) {
-                        JSONObject stateWiseArrayJSONObject = todayAndTotalDataArray.getJSONObject(i);
-                        Log.d("Prakash", "onResponse: "+stateWiseArrayJSONObject);
-                        String active = stateWiseArrayJSONObject.getString("active");
-                        String death = stateWiseArrayJSONObject.getString("deaths");
-                        String recovered = stateWiseArrayJSONObject.getString("recovered");
-                        String state = stateWiseArrayJSONObject.getString("state");
-                        String confirmed = stateWiseArrayJSONObject.getString("confirmed");
-                        String lastUpdated = stateWiseArrayJSONObject.getString("lastupdatedtime");
-
-                        //details of today cases for each individual state
-                        String todayActive = stateWiseArrayJSONObject.getString("deltaconfirmed");
-                        String todayDeath = stateWiseArrayJSONObject.getString("deltadeaths");
-                        String todayRecovered = stateWiseArrayJSONObject.getString("deltarecovered");
-
-
-                        //pass all the detail to CoronaItem class
-                        CoronaItem coronaItem = new CoronaItem(state, death, active, recovered, confirmed, lastUpdated, todayDeath, todayRecovered, todayActive);
-                        coronaItemArrayList.add(coronaItem);
+                            //pass all the detail to CoronaItem class
+                            CoronaItem coronaItem = new CoronaItem(stateName, deceased, active, recovered, confirmed, lastUpdated, todayDeceased, todayRecovered, todayConfirmed);
+                            coronaItemArrayList.add(coronaItem);
+                        }
                     }
 
+//                    JSONObject todayAndTotalDataJsonObject = todayAndTotalDataArray.getJSONObject(0);
+//
+//                    String dailyConfirmed = todayAndTotalDataJsonObject.getString("deltaconfirmed");
+//                    String dailyDeath = todayAndTotalDataJsonObject.getString("deltadeaths");
+//                    String dailyRec = todayAndTotalDataJsonObject.getString("deltarecovered");
+//                    String dateHeader = todayAndTotalDataJsonObject.getString("lastupdatedtime").substring(0, 5);
+//                    dateHeader = getFormattedDate(dateHeader);
+//
+//                    dailyConfirm.setText(dailyConfirmed);
+//                    dailyReco.setText(dailyRec);
+//                    dailyDeaths.setText(dailyDeath);
+//                    dateHeaders.setText(dateHeader);
+//
+//                    //for Total Details
+//                    //"todayAndTotalDataArray" holds data of all states
+//                    //At index 0 of todayAndTotalDataArray "Total Details" is stored
+//                    String totalDeathsFetched = todayAndTotalDataJsonObject.getString("deaths");
+//                    String totalRecoverFetched = todayAndTotalDataJsonObject.getString("recovered");
+//                    String totalConfirmedFetched = todayAndTotalDataJsonObject.getString("confirmed");
+//
+//                    totalConfirm.setText(totalConfirmedFetched);
+//                    totalDeath.setText(totalDeathsFetched);
+//                    totalRecovered.setText(totalRecoverFetched);
+//
+//
+//                    //Secondly, fetch and display data for all states
+//                    //that data is also present in todayAndTotalDataArray from index 1
+//                    for (int i = 1; i < todayAndTotalDataArray.length(); i++) {
+//                        JSONObject stateWiseArrayJSONObject = todayAndTotalDataArray.getJSONObject(i);
+//                        String active = stateWiseArrayJSONObject.getString("active");
+//                        String death = stateWiseArrayJSONObject.getString("deaths");
+//                        String recovered = stateWiseArrayJSONObject.getString("recovered");
+//                        String state = stateWiseArrayJSONObject.getString("state");
+//                        String confirmed = stateWiseArrayJSONObject.getString("confirmed");
+//                        String lastUpdated = stateWiseArrayJSONObject.getString("lastupdatedtime");
+//
+//                        //details of today cases for each individual state
+//                        String todayActive = stateWiseArrayJSONObject.getString("deltaconfirmed");
+//                        String todayDeath = stateWiseArrayJSONObject.getString("deltadeaths");
+//                        String todayRecovered = stateWiseArrayJSONObject.getString("deltarecovered");
+//
+//
+//                        //pass all the detail to CoronaItem class
+//                        CoronaItem coronaItem = new CoronaItem(state, death, active, recovered, confirmed, lastUpdated, todayDeath, todayRecovered, todayActive);
+//                        coronaItemArrayList.add(coronaItem);
+//                    }
+//
                     //setting the RecyclerView to display all information
                     RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, coronaItemArrayList);
                     recyclerView.setAdapter(recyclerViewAdapter);
@@ -143,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
     //formatting date from numeric to aplhabetic  like 03/04 to 03 April
     private String getFormattedDate(String dateHeader) {
-        Log.d("Prakash", "getFormattedDate: " + dateHeader.subSequence(3, 5));
         switch (dateHeader.substring(3, 5)) {
             case "01":
                 return dateHeader.substring(0, 2) + " Jan";
