@@ -5,9 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="black">#000000</color>
     <color name="active">#1887FF</color>
-    <color name="confirmed">#FF073A</color>
-    <color name="recovered">#28A745</color>
     <color name="white">#FFFFFF</color>
-    <color name="grey">#EDF1F4</color>
 
 </resources>

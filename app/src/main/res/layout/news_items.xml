@@ -114,15 +114,6 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp" />
 
-            <!--        fetched active count for today-->
-            <TextView
-                android:id="@+id/todayActive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/active"
-                android:textSize="15sp" />
-
         </LinearLayout>
 
 
@@ -179,6 +170,99 @@
             <!--            fetched total confirmed count-->
             <TextView
                 android:id="@+id/confirmed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+            <!--          fetched confirmed count for today-->
+            <TextView
+                android:id="@+id/todayConfirmed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/active"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!--    Horizontal Linear Layout for Tested Cases-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_tested"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <!--            fetched total Tested count-->
+            <TextView
+                android:id="@+id/tested"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+            <!--          fetched Tested count for today-->
+            <TextView
+                android:id="@+id/todayTested"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/active"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!--    Horizontal Linear Layout for Vaccinated 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vaccinated1"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <!--            fetched total Vaccinated1 count-->
+            <TextView
+                android:id="@+id/vaccinated1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <!--    Horizontal Linear Layout for Vaccinated 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vaccinated2"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <!--            fetched total Vaccinated2 count-->
+            <TextView
+                android:id="@+id/vaccinated2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"

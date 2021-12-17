@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,25 +35,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         CoronaItem coronaItem = coronaItemArrayList.get(position);
         String state = coronaItem.getState();
         String death = coronaItem.getDeath();
-        String recovered = coronaItem.getRecovered();
         String active = coronaItem.getActive();
+        String recovered = coronaItem.getRecovered();
         String confirmed = coronaItem.getConfirmed();
-        String lastUpdt = coronaItem.getLastUpdated();
+        String lastUpdated = coronaItem.getLastUpdated();
         String todayDeath = coronaItem.getTodayDeath();
-        String todayActive = coronaItem.getTodayActive();
         String todayRecovered = coronaItem.getTodayRecovered();
+        String todayConfirmed = coronaItem.getTodayConfirmed();
+        String vaccinated1 = coronaItem.getVaccinated1();
+        String vaccinated2 = coronaItem.getVaccinated2();
+        String tested = coronaItem.getTested();
+        String todayTested = coronaItem.getTodayTested();
 
         holder.state.setText(state);
         holder.death.setText(death);
-        holder.recovered.setText(recovered);
         holder.active.setText(active);
+        holder.recovered.setText(recovered);
         holder.confirmed.setText(confirmed);
-        holder.lastUpdate.setText(lastUpdt);
+        holder.lastUpdate.setText(lastUpdated);
         holder.todayDeath.setText(String.format("(%s)", todayDeath));
-        holder.todayActive.setText(String.format("(%s)", todayActive));
         holder.todayRecovered.setText(String.format("(%s)", todayRecovered));
-
-
+        holder.todayConfirmed.setText(String.format("(%s)", todayConfirmed));
+        holder.vaccinated1.setText(String.format("  %s            ", vaccinated1));
+        holder.vaccinated2.setText(vaccinated2);
+        holder.tested.setText(tested);
+        holder.todayTested.setText(String.format("(%s)", todayTested));
     }
 
     @Override
@@ -65,7 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     //Holding all the views of the layout chosen to display the content
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        TextView state, death, recovered, active, confirmed, lastUpdate, todayDeath, todayActive, todayRecovered;
+        TextView state, death, recovered, active, confirmed, lastUpdate, todayDeath, todayRecovered, todayConfirmed, vaccinated1, vaccinated2, tested, todayTested;
 
         RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,10 +82,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             confirmed = itemView.findViewById(R.id.confirmed);
             lastUpdate = itemView.findViewById(R.id.lastUpdated);
             todayDeath = itemView.findViewById(R.id.todayDeath);
-            todayActive = itemView.findViewById(R.id.todayActive);
             todayRecovered = itemView.findViewById(R.id.todayRecovered);
-
-
+            todayConfirmed = itemView.findViewById(R.id.todayConfirmed);
+            vaccinated1 = itemView.findViewById(R.id.vaccinated1);
+            vaccinated2 = itemView.findViewById(R.id.vaccinated2);
+            tested = itemView.findViewById(R.id.tested);
+            todayTested = itemView.findViewById(R.id.todayTested);
         }
     }
 

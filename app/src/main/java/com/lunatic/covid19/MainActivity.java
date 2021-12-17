@@ -56,37 +56,65 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private String checkNullable(String s) {
+        if (s.isEmpty())
+            return "0";
+        return s;
+    }
+
 
     private void jsonParse() {
 
         String url = "https://data.covid19india.org/v4/min/data.min.json";
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            String lastUpdated = "0", confirmed = "0", recovered = "0", deceased = "0", tested = "0", vaccinated1 = "0", vaccinated2 = "0", active = "0", todayDeceased = "0", todayRecovered = "0", todayConfirmed = "0", todayTested = "0";
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     Iterator<String> keys = response.keys();
-                    while(keys.hasNext()) {
+                    while (keys.hasNext()) {
                         String key = keys.next();
                         if (response.get(key) instanceof JSONObject) {
                             JSONObject stateJsonObject = (JSONObject) response.get(key);
 
                             String stateName = key;
-                            String lastUpdated = getFormattedDate(stateJsonObject.getJSONObject("meta").getString("last_updated"));
-                            String confirmed = stateJsonObject.getJSONObject("total").getString("confirmed");
-                            String recovered = stateJsonObject.getJSONObject("total").getString("recovered");
-                            String deceased = stateJsonObject.getJSONObject("total").getString("deceased");
-                            String tested = stateJsonObject.getJSONObject("total").getString("tested");
-                            String vaccinated1 = stateJsonObject.getJSONObject("total").getString("vaccinated1");
-                            String vaccinated2 = stateJsonObject.getJSONObject("total").getString("vaccinated2");
-                            String active = String.valueOf(Integer.parseInt(confirmed) - (Integer.parseInt(recovered) + Integer.parseInt(deceased)));
-                            String todayDeceased = stateJsonObject.getJSONObject("delta").getString("deceased");
-                            String todayRecovered = stateJsonObject.getJSONObject("delta").getString("recovered");
-                            String todayConfirmed = stateJsonObject.getJSONObject("delta").getString("confirmed");
-                            String todayTested = stateJsonObject.getJSONObject("delta").getString("tested");
 
+                            JSONObject totalJsonObject = stateJsonObject.getJSONObject("total");
+                            JSONObject metaJsonObject = stateJsonObject.getJSONObject("meta");
+                            JSONObject deltaJsonObject = null;
+                            if (stateJsonObject.has("delta"))
+                                deltaJsonObject = stateJsonObject.getJSONObject("delta");
+
+                            Log.d("Deb", "stateName = " + stateName);
+                            lastUpdated = getFormattedDate(metaJsonObject.getString("last_updated"));
+                            Log.d("Deb", "lastUpdated = " + lastUpdated);
+                            Log.d("Deb", "totalJsonObject = " + totalJsonObject);
+                            confirmed = totalJsonObject.getString("confirmed");
+                            recovered = totalJsonObject.getString("recovered");
+                            deceased = totalJsonObject.getString("deceased");
+                            tested = totalJsonObject.getString("tested");
+                            vaccinated1 = totalJsonObject.getString("vaccinated1");
+                            vaccinated2 = totalJsonObject.getString("vaccinated2");
+                            active = String.valueOf(Integer.parseInt(confirmed) - (Integer.parseInt(recovered) + Integer.parseInt(deceased)));
+                            if (deltaJsonObject != null) {
+                                if (deltaJsonObject.has("deceased"))
+                                    todayDeceased = deltaJsonObject.getString("deceased");
+                                Log.d("Deb", "todayDeceased = " + todayDeceased);
+                                if (deltaJsonObject.has("recovered"))
+                                    todayRecovered = deltaJsonObject.getString("recovered");
+                                Log.d("Deb", "todayRecovered = " + todayRecovered);
+                                if (deltaJsonObject.has("confirmed"))
+                                    todayConfirmed = deltaJsonObject.getString("confirmed");
+                                Log.d("Deb", "todayConfirmed = " + todayConfirmed);
+                                if (deltaJsonObject.has("tested"))
+                                    todayTested = deltaJsonObject.getString("tested");
+                                Log.d("Deb", "todayTested = " + todayTested);
+                            }
                             //pass all the detail to CoronaItem class
-                            CoronaItem coronaItem = new CoronaItem(stateName, deceased, active, recovered, confirmed, lastUpdated, todayDeceased, todayRecovered, todayConfirmed);
+                            CoronaItem coronaItem = new CoronaItem(stateName, deceased, active, recovered, confirmed, lastUpdated, todayDeceased, todayRecovered, todayConfirmed,
+                                    vaccinated1, vaccinated2, tested, todayTested);
                             coronaItemArrayList.add(coronaItem);
                         }
                     }
@@ -163,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     //formatting date from numeric to aplhabetic  like 03/04 to 03 April
     private String getFormattedDate(String dateHeader) {
-        switch (dateHeader.substring(3, 5)) {
+        switch (dateHeader.substring(5, 7)) {
             case "01":
                 return dateHeader.substring(0, 2) + " Jan";
             case "02":
@@ -193,5 +221,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    private String formatNumbers(String num) {
+        String result = "";
+        int count = 0;
+        for (int i = num.length(); i >= 0; i--) {
+            result += num.charAt(i);
+            if (count % 2 == 0 && i > 0)
+                result += ",";
+        }
+        return result;
+    }
 }

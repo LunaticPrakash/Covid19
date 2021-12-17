@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Covid19</string>
-    <string name="total">Total</string>
     <string name="date">Date</string>
     <string name="confirmed">Confirmed</string>
     <string name="recovered">Recovered</string>
@@ -10,6 +9,7 @@
     <string name="state_name">State Name</string>
     <string name="active">Active</string>
     <string name="total_confirmed">Total Confirmed</string>
-
-
+    <string name="total_tested">Total Tested</string>
+    <string name="vaccinated1">Dose 1</string>
+    <string name="vaccinated2">Dose 2</string>
 </resources>
