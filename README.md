@@ -6,9 +6,9 @@ This app displays the COVID-19 statisticals details of individual states of Indi
 1. To know the correct information about no. of recovered, died, confirmed patients of COVID-19 in states of India.
 2. Understand JSON parsing
 
-## Screenshot :-
+<!-- ## Screenshot :-
 ![Screenshot1](app/src/main/res/drawable/screenshot1.png)
-![Screenshot2](app/src/main/res/drawable/screenshot2.png)
+![Screenshot2](app/src/main/res/drawable/screenshot2.png) -->
 
 ### Dependencies :-
 ```
